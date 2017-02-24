@@ -4,16 +4,17 @@ var state = {
 }
 
 //state modification functions
-var addItem = function (state, item) {
+function addItem(state, item) {
     state.items.push(item);
 }
-var deleteItem = function(state, item) {
+
+function deleteItem(state, item) {
     state.items.splice(item, 1);
 }
 
 
 // Render functions
-var renderList = function (state, element) {
+function renderList(state, element) {
     var itemsHTML = state.items.map(function (item) {
         return '<li> <span class="shopping-item">' + item + '</span>' +
             '<div class="Shopping-item-controls">' +
@@ -24,7 +25,7 @@ var renderList = function (state, element) {
             '<span class="button-label">delete</span>' +
             '</button>' +
             '</div>' +
-            '</li>' 
+            '</li>'
     });
     element.html(itemsHTML);
 }
@@ -32,22 +33,47 @@ var renderList = function (state, element) {
 
 // Event listeners
 // Add new item to shopping list
-$('#js-shopping-list-form').submit(function (event) {
-    event.preventDefault();
-    addItem(state, $('#shopping-list-entry').val());
-    renderList(state, $('.shopping-list'));
-});
+function formAddItems() {
+    $('#js-shopping-list-form').submit(function (event) {
+        event.preventDefault();
+        addItem(state, $('#shopping-list-entry').val());
+        renderList(state, $('.shopping-list'));
+        this.reset();
+    });
+
+}
+
 
 // Add strikethrough to shopping list item
-$('.shopping-list').on("click", ".shopping-item-toggle", function () {
-    
-    $(this).closest("li").toggleClass('shopping-item__checked');
+function addStrike() {
+    $('.shopping-list').on("click", ".shopping-item-toggle", function () {
 
-});
+        $(this).closest("li").toggleClass('shopping-item__checked');
+
+    });
+
+
+}
 
 // Delete shopping list item
-$('.shopping-list').on("click", ".shopping-item-delete", function(){
-    debugger
-    $(this).deleteItem(state, $('.shopping-item'));
-}); 
+function removeItem() {
+    $('.shopping-list').on("click", ".shopping-item-delete", function () {
 
+        // $(this).closest('li').remove();
+        var itemIndex = parseInt($(this).closest("li"));
+
+        deleteItem(state, itemIndex);
+        renderList(state, $('.shopping-list'));
+    });
+
+
+}
+
+
+$(function () {
+
+    formAddItems();
+    addStrike();
+    removeItem();
+
+});
