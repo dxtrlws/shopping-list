@@ -12,6 +12,9 @@ function deleteItem(state, item) {
     state.items.splice(item, 1);
 }
 
+function getItem (state, itemIndex) {
+    
+}
 
 // Render functions
 function renderList(state, element) {
@@ -58,10 +61,16 @@ function addStrike() {
 // Delete shopping list item
 function removeItem() {
     $('.shopping-list').on("click", ".shopping-item-delete", function () {
-
+        debugger
         // $(this).closest('li').remove();
-        var itemIndex = parseInt($(this).closest("li"));
-
+        var closest = $(this).closest("li");
+        console.log("logging closest variable " + closest);
+        var itemIndex = closest.index("li");
+        console.log("should return a number " + itemIndex);
+        // var itemIndex = $(this).closest("li.shopping-item").index("li");
+        // console.log("logging itemIndex variable " + itemIndex);
+        // var itemIndex = $(this).closest("li.shopping-item").text();
+        
         deleteItem(state, itemIndex);
         renderList(state, $('.shopping-list'));
     });
@@ -71,7 +80,6 @@ function removeItem() {
 
 
 $(function () {
-
     formAddItems();
     addStrike();
     removeItem();
